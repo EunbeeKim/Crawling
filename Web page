@@ -1,0 +1,30 @@
+#### Naver ####
+raw_naver = readLines("http://www.naver.com/")
+Encoding(raw_naver) = "UTF-8"
+text_sub = text[589:608]
+for(n in 1:length(text_sub)){
+  start_p = gregexpr(text_sub[n], pattern = ">")[[1]][1] + 1
+  end_p   = gregexpr(text_sub[n], pattern = "<")[[1]][2] - 1
+  text_sub[n] = substr(text_sub[n], start_p, end_p)
+}
+text_sub
+
+#### Daum ####
+text = readLines("http://www.daum.net/")
+Encoding(text) = "UTF-8"
+text_rank = unique(text_sub[(text[1664:1880] == "</a>")[2:length(text[1664:1880])]])
+start_p = gregexpr(pattern = ">", text = text_rank[1])[[1]][1] + 1
+end_p   = gregexpr(pattern = "<", text = text_rank[1])[[1]][2] - 1
+text_rank[1] = substr(text_rank[1], start = start_p, stop = end_p)
+t(t(text_rank))
+
+#### zum ####
+text = readLines("http://zum.com")
+Encoding(text) = "UTF-8"
+text_sub = unique(text[grep(text, pattern = "keyword d_keyword")])
+for(n in 1:length(text_sub)){
+  start_p = gregexpr(pattern = ">", text = text_sub[n])[[1]][1] + 1
+  end_p   = gregexpr(pattern = "<", text = text_sub[n])[[1]][2] - 1
+  text_sub[n] = substr(text_sub[n], start = start_p, stop = end_p)
+}
+t(t(text_sub))
